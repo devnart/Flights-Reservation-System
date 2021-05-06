@@ -16,8 +16,10 @@ class UserController extends User
       $myUser = $this->check_login($email, $password);
 
       if (!empty($myUser)) {
-
+        $_SESSION['myuser'] = $myUser[0];
         $_SESSION['username'] = $myUser[0]['name'];
+        $_SESSION['email'] = $myUser[0]['email'];
+        $_SESSION['clientID'] = $myUser[0]['id'];
         $_SESSION['logged'] = true;
         $_SESSION['role'] = $myUser[0]['role'];
         // Check user role

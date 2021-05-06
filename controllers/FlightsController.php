@@ -33,7 +33,7 @@ class FlightsController extends Flight
             );
             $result = $this->add($data);
             if ($result === 'ok') {
-                header('location:' . BASE_URL);
+                header('location:dashboard');
             } else {
                 echo $result;
             }
@@ -55,7 +55,7 @@ class FlightsController extends Flight
             $result = $this->update($data);
             if ($result === 'ok') {
                 $sessionn = new Session;
-                $sessionn->set('success','Updated Successfuly');
+                $sessionn->set('success', 'Updated Successfuly');
                 header('location:' . BASE_URL);
             } else {
                 echo $result;
@@ -73,20 +73,55 @@ class FlightsController extends Flight
         }
     }
 
-    public function searchFlight(){
-        if(isset($_POST['search'])){
-            $land ="";
+    public function searchFlight()
+    {
+        if (isset($_POST['search'])) {
+            $land = "";
             $origin = $_POST['from'];
             $destination = $_POST['to'];
             $depart = $_POST['depart'];
-            if(isset($_POST['land'])) {
+            if (isset($_POST['land'])) {
 
                 $land = $_POST['land'];
             }
-            $search = $this->getSearch($origin,$destination,$depart,$land);
+            $search = $this->getSearch($origin, $destination, $depart, $land);
             return $search;
-            header('location:'.BASE_URL);
+
+
+            // header('location:'.BASE_URL);
         }
     }
-
+    public function reserveFlight()
+    {
+        if (isset($_POST['reserveOne'])) {
+            $data = array(
+                'flightID' => $_POST['flightID'],
+                'clientID' => $_POST['clientID'],
+                'cName' => $_POST['cName'],
+                'cEmail' => $_POST['cEmail'],
+                'round' => false,
+                
+            );
+        }
+        if (isset($_POST['reserveRound'])) {
+            $data = array(
+                'flightID' => $_POST['allerID'],
+                'retourID' => $_POST['retourID'],
+                'clientID' => $_POST['clientID'],
+                'cName' => $_POST['cName'],
+                'cEmail' => $_POST['cEmail'],
+                'round' => true,
+            );
+        }
+        
+        $result = $this->reserve($data);
+        if($result == 'ok') {
+            var_dump($data);
+            Session::set('success','Reserved');
+            header('location:home');
+        }elseif($result == 'error'){
+            Session::set('error','Something went wrong');
+            header('location:home');
+        }
+    }
 }

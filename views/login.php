@@ -1,13 +1,15 @@
 <?php
 if (isset($_SESSION['username'])) {
-    header('location:'.BASE_URL.'index.php');
+    header('location:' . BASE_URL . 'index.php');
+    
 }
 
 if (isset($_POST['submit'])) {
     $login = new UserController();
     $login->login();
-
 }
+
+
 ?>
 
 <body>

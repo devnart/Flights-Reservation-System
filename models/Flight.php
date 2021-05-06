@@ -72,26 +72,28 @@ class Flight extends DB
         }
     }
 
-    public function getSearch($origin,$destination,$depart,$land){
+    public function getSearch($origin, $destination, $depart, $land)
+    {
 
         try {
-            $stmt = $this->connect()->prepare('SELECT * FROM `flight` WHERE `origin` LIKE :origin AND `destination` LIKE :destination AND `depart` LIKE :depart');
-            $stmt->bindValue(':origin','%'.$origin.'%');
-            $stmt->bindValue(':destination','%'.$destination.'%');
-            $stmt->bindValue(':depart','%'.$depart.'%');
+            $stmt = $this->connect()->prepare('SELECT * FROM `flight` WHERE `origin` LIKE :origin AND `destination` LIKE :destination AND `depart` LIKE :depart AND `land` LIKE :land');
+            $stmt->bindValue(':origin', '%' . $origin . '%');
+            $stmt->bindValue(':destination', '%' . $destination . '%');
+            $stmt->bindValue(':depart', '%' . $depart . '%');
+            $stmt->bindValue(':land', '%' . $land . '%');
             $stmt->execute();
-            $flight = $stmt->fetch(PDO::FETCH_ASSOC);
+            $flight = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $data = [
                 'aller' => $flight
             ];
-            
-            if($land){
+
+            if ($land) {
                 $stmt = $this->connect()->prepare('SELECT * FROM `flight` WHERE `origin` LIKE :destination AND `destination` LIKE :origin AND `depart` LIKE :land');
-                $stmt->bindValue(':destination','%'.$destination.'%');
-                $stmt->bindValue(':origin','%'.$origin.'%');
-                $stmt->bindValue(':land','%'.$land.'%');
+                $stmt->bindValue(':destination', '%' . $destination . '%');
+                $stmt->bindValue(':origin', '%' . $origin . '%');
+                $stmt->bindValue(':land', '%' . $land . '%');
                 $stmt->execute();
-                $flightReturn = $stmt->fetch(PDO::FETCH_ASSOC);
+                $flightReturn = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
                 $data = [
                     'aller' => $flight,
@@ -101,6 +103,40 @@ class Flight extends DB
             return $data;
         } catch (PDOException $th) {
             echo $th->getMessage();
+        }
+    }
+
+
+    public function reserve($data)
+    {
+        if ($data['round'] == false) {
+
+            $stmt = $this->connect()->prepare('INSERT INTO reserve (idClient,idFlight,cName,cEmail) VALUES (:idClient,:idFlight,:cName,:cEmail)');
+            $stmt->bindParam(':idClient', $data['clientID']);
+            $stmt->bindParam(':idFlight', $data['flightID']);
+            $stmt->bindParam(':cName', $data['cName']);
+            $stmt->bindParam(':cEmail', $data['cEmail']);
+
+            if ($stmt->execute()) {
+                return 'ok';
+            } else {
+                return 'error';
+            }
+        }
+        if ($data['round'] == true) {
+
+            $stmt = $this->connect()->prepare('INSERT INTO reserve (idClient,idFlight,cName,cEmail) VALUES (:idClient,:idFlight,:cName,:cEmail),(:idClient,:idReturn,:cName,:cEmail)');
+            $stmt->bindParam(':idClient', $data['clientID']);
+            $stmt->bindParam(':idFlight', $data['flightID']);
+            $stmt->bindParam(':idReturn', $data['retourID']);
+            $stmt->bindParam(':cName', $data['cName']);
+            $stmt->bindParam(':cEmail', $data['cEmail']);
+
+            if ($stmt->execute()) {
+                return 'ok';
+            } else {
+                return 'error';
+            }
         }
     }
 }

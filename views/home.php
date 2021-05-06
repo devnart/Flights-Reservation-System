@@ -1,8 +1,8 @@
 <div class="container"><?php
-                   if(isset($_SESSION['username'])){
-                    echo
-                    '<a class="btn btn-primary" href="logout">' . $_SESSION['username'] . '</a>';
-                   }
+                        if (isset($_SESSION['username'])) {
+                            echo
+                            '<a class="btn btn-primary" href="logout">' . $_SESSION['username'] . '</a>';
+                        }
                         ?>
 
     <div class="row">
