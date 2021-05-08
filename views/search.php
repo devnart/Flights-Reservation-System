@@ -38,11 +38,11 @@ if ($_SESSION['logged'] == false) {
                 </thead>
                 <tbody>
 
-                        <?php for ($i = 0; $i < count($r); $i++) : ?>
-                    <form action="reserve" method="POST">
-                        <input type="hidden" name="clientID" value="<?php echo $_SESSION['clientID'] ?>">
-                        <input type="hidden" name="cEmail" value="<?php echo $_SESSION['email'] ?>">
-                        <input type="hidden" name="cName" value="<?php echo $_SESSION['username'] ?>">
+                    <?php for ($i = 0; $i < count($r); $i++) : ?>
+                        <form action="reserve" method="POST">
+                            <input type="hidden" name="clientID" value="<?php echo $_SESSION['clientID'] ?>">
+                            <input type="hidden" name="cEmail" value="<?php echo $_SESSION['email'] ?>">
+                            <input type="hidden" name="cName" value="<?php echo $_SESSION['username'] ?>">
                             <tr>
                                 <td><?php echo $r['aller'][$i]['depart']; ?></td>
                                 <td><?php echo $r['aller'][$i]['land']; ?></td>
@@ -66,8 +66,9 @@ if ($_SESSION['logged'] == false) {
                                 <td><input type="submit" class="btn btn-primary" value="Reserve" name="reserveRound"></td>
                             </tr>
 
-                </form>
-                        <?php endfor; ?>
+
+                        </form>
+                    <?php endfor; ?>
 
                 </tbody>
             </table>
@@ -101,10 +102,14 @@ if ($_SESSION['logged'] == false) {
                                     <td><?php echo $flight['destination'] ?></td>
                                     <input type="hidden" name="flightID" value="<?php echo $flight['id'] ?>">
 
-                                    <td>
+                                    <td class="d-flex align-items-center">
+                                        <i class="fas fa-plus-square fs-2 me-2 addPassenger" style="cursor: pointer;" id=""  value="<?php echo $flight['id']?>"></i>
                                         <input type="submit" class="btn btn-primary" value="reserve" name="reserveOne">
 
                                     </td>
+                                </tr>
+                                <tr class="passengers" id="<?php echo $flight['id'] ?>">
+                                  
                                 </tr>
                             </form>
                         <?php endforeach; ?>
@@ -114,3 +119,28 @@ if ($_SESSION['logged'] == false) {
         <?php endif; ?>
 
         </div>
+        <script>
+            var addBtn = document.querySelectorAll('.addPassenger')
+            
+            addBtn.forEach((e) => {
+                var i = 0;
+                e.addEventListener('click', ()=> {
+                    i++
+                    var content = '<td>Passenger #1</td><td colspan=""><div class="input-group-lg d-flex mb-3 flex-column"><label for="from" class="form-label">Full Name</label><input class="form-control" name="pname'+ i +'" type="text" id="pname" placeholder="Name" required></div></td><td colspan=""><div class="input-group-lg d-flex mb-3 flex-column"><label for="from" class="form-label">Date of birth</label><input class="form-control" name="pdob'+i+'" type="text" id="dob" placeholder="Name" required></div></td>'
+                    var div = document.createElement('div')
+                    div.classList.add('d-flex')
+                    div.style.gap = '10px'
+
+                    var id = document.getElementById(e)
+                    var passengers = document.getElementById(e.attributes.value.value)
+
+                    div.innerHTML = content
+                    passengers.appendChild(div)
+                    
+    
+    
+                })
+            })
+
+
+        </script>
