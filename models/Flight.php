@@ -25,6 +25,35 @@ class Flight extends DB
             echo $th->getMessage();
         }
     }
+
+    public function getReserved()
+    {
+        $stmt = $this->connect()->prepare('SELECT id,idClient,idFlight,added FROM reserve');
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+
+    public function getUserReserved($data)
+    {
+
+        $id = $data;
+
+        try {
+            $stmt = $this->connect()->prepare('SELECT flight.id,flight.depart,flight.land,flight.origin,flight.destination,reserve.added,reserve.id
+            FROM flight,reserve,users
+            WHERE users.id=reserve.idClient
+            AND flight.id=reserve.idFlight
+            AND users.id=:id');
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+            $reservation = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $reservation;
+        } catch (PDOException $th) {
+            echo $th->getMessage();
+        }
+    }
+
     public function add($data)
     {
         $stmt = $this->connect()->prepare('INSERT INTO flight (depart,land,origin,destination,maxSeats) VALUES (:depart,:land,:origin,:destination,:maxSeats)');
@@ -50,7 +79,6 @@ class Flight extends DB
         $stmt->bindParam(':destination', $data['destination']);
         $stmt->bindParam(':maxSeats', $data['maxSeats']);
         $stmt->bindParam(':id', $data['id']);
-        var_dump($data);
 
         if ($stmt->execute()) {
             return 'ok';
@@ -117,7 +145,11 @@ class Flight extends DB
             $stmt->bindParam(':cName', $data['cName']);
             $stmt->bindParam(':cEmail', $data['cEmail']);
 
+
+            // $rowID = $sql->execute();
+
             if ($stmt->execute()) {
+
                 return 'ok';
             } else {
                 return 'error';
@@ -139,4 +171,18 @@ class Flight extends DB
             }
         }
     }
+
+    public function deleteReserve($data){
+        $id = $data;
+
+        try {
+            $stmt = $this->connect()->prepare('DELETE FROM reserve WHERE id=:id');
+            $stmt->bindParam(':id', $id);
+            $stmt->execute();
+        } catch (PDOException $th) {
+            echo $th->getMessage();
+        }
+    }
+
+
 }

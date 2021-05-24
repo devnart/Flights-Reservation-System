@@ -1,9 +1,27 @@
-<div class="container"><?php
-                        if (isset($_SESSION['username'])) {
-                            echo
-                            '<a class="btn btn-primary" href="logout">' . $_SESSION['username'] . '</a>';
-                        }
-                        ?>
+<div class="container">
+
+    <div class="my-4 d-flex">
+        <?php
+        if (isset($_SESSION['username'])) {
+            echo '<h4 class="">Hello, ' . $_SESSION["username"] . '</h4>';
+
+            if ($_SESSION['role'] == 'admin') {
+                echo  '<a class="btn btn-primary ms-auto me-1" href="dashboard">Dashboard</a>';
+                echo
+                '<a class="btn btn-primary" href="logout"><i class="fas fa-sign-out-alt me-1"></i>logout</a>';
+            } else {
+                echo  '<a class="btn btn-primary ms-auto me-1" href="userFlights">My Reservations</a>';
+
+                echo
+                '<a class="btn btn-primary " href="logout"><i class="fas fa-sign-out-alt me-1"></i>logout</a>';
+            }
+        } else {
+            echo
+            '<a class="btn btn-primary ms-auto" href="login"><i class="fas fa-sign-in-alt me-1"></i>login</a>';
+        }
+        ?>
+    </div>
+
 
     <div class="row align-items-center mt-5">
         <div class="col-lg-6 ">
@@ -55,7 +73,7 @@
             </div>
         </div>
         <div class='col-lg-6 text-center'>
-        <img src="public/img/3d-flame-114.png" alt="" class="img-fluid" style="width:255px;">
+            <img src="public/img/3d-flame-114.png" alt="" class="img-fluid" style="width:255px;">
         </div>
     </div>
 </div>
@@ -68,12 +86,11 @@
         if (option1.checked) {
             console.log("Hi")
             back.removeAttribute('disabled')
-            back.setAttribute('required','required')
+            back.setAttribute('required', 'required')
         } else if (option2.checked) {
             back.setAttribute('disabled', 'disabled')
             back.removeAttribute('required')
 
         }
     }
-    
 </script>

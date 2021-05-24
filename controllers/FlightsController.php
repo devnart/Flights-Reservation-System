@@ -21,6 +21,7 @@ class FlightsController extends Flight
         }
     }
 
+
     public function addFlight()
     {
         if (isset($_POST['submit'])) {
@@ -56,7 +57,7 @@ class FlightsController extends Flight
             if ($result === 'ok') {
                 $sessionn = new Session;
                 $sessionn->set('success', 'Updated Successfuly');
-                header('location:' . BASE_URL);
+                header('location:dashboard');
             } else {
                 echo $result;
             }
@@ -91,17 +92,42 @@ class FlightsController extends Flight
             // header('location:'.BASE_URL);
         }
     }
+
+    public function getAllReserved()
+    {
+        $flights = $this->getReserved();
+        return $flights;
+    }
+
+    public function getUserReservation($data)
+    {
+
+        $reservation = $this->getUserReserved($data);
+        return $reservation;
+
+    }
+
+
     public function reserveFlight()
     {
         if (isset($_POST['reserveOne'])) {
+
             $data = array(
                 'flightID' => $_POST['flightID'],
                 'clientID' => $_POST['clientID'],
                 'cName' => $_POST['cName'],
                 'cEmail' => $_POST['cEmail'],
                 'round' => false,
-                
             );
+            if (!isset($_POST['pname'])) {
+                $data = array(
+                    'flightID' => $_POST['flightID'],
+                    'clientID' => $_POST['clientID'],
+                    'cName' => $_POST['cName'],
+                    'cEmail' => $_POST['cEmail'],
+                    'round' => false,
+                );
+            }
         }
         if (isset($_POST['reserveRound'])) {
             $data = array(
@@ -113,15 +139,48 @@ class FlightsController extends Flight
                 'round' => true,
             );
         }
-        
+
         $result = $this->reserve($data);
-        if($result == 'ok') {
-            var_dump($data);
-            Session::set('success','Reserved');
+        if ($result == 'ok') {
+            Session::set('success', 'Reserved');
+
+            // var_dump($result);
             header('location:home');
-        }elseif($result == 'error'){
-            Session::set('error','Something went wrong');
+        } elseif ($result == 'error') {
+            Session::set('error', 'Something went wrong');
             header('location:home');
         }
     }
+
+    public function deleteReservation(){
+        if (isset($_POST['id'])) {
+            $id = $_POST['id'];
+
+            $this->deleteReserve($id);
+            header('location:reservedFlights');
+        }
+    }
+
+
+    public function updateReservation()
+    {
+        if (isset($_POST['submit'])) {
+            $data = array(
+                'id' => $_POST['id'],
+                'depart' => $_POST['depart'],
+                'land' => $_POST['land'],
+                'origin' => $_POST['origin'],
+                'destination' => $_POST['destination'],
+                'passengers' => $_POST['passengers'],
+            );
+            $result = $this->update($data);
+            if ($result === 'ok') {
+                Session::set('Success', 'Updated Successfully');
+                header('location:userFlights');
+            } else {
+                echo $result;
+            }
+        }
+    }
+
 }

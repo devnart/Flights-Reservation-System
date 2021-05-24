@@ -12,15 +12,18 @@ if (isset($_SESSION['logged'])) {
   header('location:login');
 }
 
-echo $_SESSION['username'];
-
-
 ?>
 
 <div class="container">
+  <div class="my-4 d-flex">
+
+    <a class="btn btn-primary me-1" href="addFlight">+</a>
+    <a class="btn btn-primary me-1" href="reservedFlights">Reservations</a>
+    <a class="btn btn-primary me-1" href="clients">Clients</a>
+    <a class="btn btn-primary" href="logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+    <h4 class="ms-auto">Hello, <?php echo $_SESSION['username']?></h4>
+  </div>
   <table class="table">
-    <a class="btn btn-primary" href="addFlight">+</a>
-    <a class="btn btn-primary" href="logout"><?php echo $_SESSION['username'] ?></a>
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -42,8 +45,8 @@ echo $_SESSION['username'];
           <td><?php echo $flight['destination'] ?></td>
           <td><?php echo $flight['maxSeats'] ?></td>
           <td class="d-flex">
-            <form action="update" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button href="update" class="btn btn-secondary"><i class="fas fa-edit"></i></button></form>
-            <form action="delete" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button href="delete" class="btn btn-danger"><i class="fas fa-trash"></i></button></form>
+            <form action="updateFlight" method="POST" class="me-1"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button href="updateFlight" class="btn btn-secondary"><i class="fas fa-edit"></i></button></form>
+            <form action="deleteFlight" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button href="deleteFlight" class="btn btn-danger"><i class="fas fa-trash"></i></button></form>
           </td>
         </tr>
       <?php endforeach; ?>

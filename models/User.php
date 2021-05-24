@@ -30,4 +30,9 @@ class User extends DB
           return 'error';
       }
     }
+    public function getClients(){
+      $stmt = $this->connect()->prepare('SELECT id,name,email,dob FROM users WHERE role="client"');
+      $stmt->execute();
+      return $stmt->fetchAll();
+    }
 }

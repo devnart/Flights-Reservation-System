@@ -30,7 +30,8 @@ if (isset($_SESSION['logged'])) {
         <input type="text" name="destination" class="form-control"  value="<?php echo $flight->destination ?>">
         <label for="" class="form-label">max</label>
         <input type="number" name="maxSeats" class="form-control mb-3" value="<?php echo $flight->maxSeats ?>">
-        <input type="submit" name="submit" value="submit" class="btn btn-primary">
+        <input type="submit" name="submit" value="submit" class="btn btn-success">
+        <a class="btn btn-secondary" href="dashboard">Cancel</a>
         <input type="hidden" name="id" value="<?php echo $flight->id ?>">
     </form>
 

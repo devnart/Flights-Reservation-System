@@ -26,20 +26,20 @@ if ($_SESSION['logged'] == false) {
 
     <?php if (isset($r['retour'])) : ?>
         <div class="table-responsive">
-            <table class="table">
-                <h2>Flights</h2>
-                <thead>
-                    <tr>
-                        <th scope="col">Origin</th>
-                        <th scope="col">Destination</th>
-                        <th scope="col">Depart</th>
-                        <th scope="col">Land</th>
-                    </tr>
-                </thead>
-                <tbody>
+            <form action="reserve" method="POST">
+                <table class="table">
+                    <h2>Flights</h2>
+                    <thead>
+                        <tr>
+                            <th scope="col">Origin</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Depart</th>
+                            <th scope="col">Land</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                    <?php for ($i = 0; $i < count($r); $i++) : ?>
-                        <form action="reserve" method="POST">
+                        <?php for ($i = 0; $i < count($r); $i++) : ?>
                             <input type="hidden" name="clientID" value="<?php echo $_SESSION['clientID'] ?>">
                             <input type="hidden" name="cEmail" value="<?php echo $_SESSION['email'] ?>">
                             <input type="hidden" name="cName" value="<?php echo $_SESSION['username'] ?>">
@@ -61,40 +61,48 @@ if ($_SESSION['logged'] == false) {
 
 
                             </tr>
+                            <tr class="passengers" id="<?php echo $r['aller'][$i]['id'] ?>">
+
+                            </tr>
                             <tr>
-                                <input type="hidden" name="clientID" value="<?php echo $_SESSION['clientID'] ?>">
-                                <td><input type="submit" class="btn btn-primary" value="Reserve" name="reserveRound"></td>
+                                <td class="d-flex align-items-center">
+                                    <i class="fas fa-plus-square fs-2 me-2 addPassenger" style="cursor: pointer;" id="" value="<?php echo $r['aller'][$i]['id']  ?>"></i>
+                                    <input type="submit" class="btn btn-primary" value="reserve" name="reserveRound">
+
+                                </td>
                             </tr>
 
 
-                        </form>
-                    <?php endfor; ?>
+                        <?php endfor; ?>
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </form>
 
         <?php endif; ?>
 
         <?php if (!isset($r['retour'])) : ?>
             <div class="table-responsive">
-                <table class="table">
-                    <h2>Flights</h2>
-                    <thead>
-                        <tr>
-                            <th scope="col">Origin</th>
-                            <th scope="col">Destination</th>
-                            <th scope="col">Depart</th>
-                            <th scope="col">Land</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
+                <form action="reserve" method="POST" id="form1">
+                    <table class="table">
+                        <h2>Flights</h2>
+                        <thead>
+                            <tr>
+                                <th scope="col">Origin</th>
+                                <th scope="col">Destination</th>
+                                <th scope="col">Depart</th>
+                                <th scope="col">Land</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
 
-                    <tbody>
-                        <?php foreach ($r['aller'] as $flight) : ?>
-                            <form action="reserve" method="POST">
+                        <tbody>
+                            <?php foreach ($r['aller'] as $flight) : ?>
                                 <input type="hidden" name="clientID" value="<?php echo $_SESSION['clientID'] ?>">
                                 <input type="hidden" name="cName" value="<?php echo $_SESSION['username'] ?>">
                                 <input type="hidden" name="cEmail" value="<?php echo $_SESSION['email'] ?>">
+                                <input type="hidden" name="maxSeats" value="<?php  echo $flight['maxSeats'] ?>">
+                                <input type="hidden" name="reserved" value="<?php  echo $flight['reserved'] ?>">
                                 <tr>
                                     <td><?php echo $flight['depart'] ?></td>
                                     <td><?php echo $flight['land'] ?></td>
@@ -102,31 +110,36 @@ if ($_SESSION['logged'] == false) {
                                     <td><?php echo $flight['destination'] ?></td>
                                     <input type="hidden" name="flightID" value="<?php echo $flight['id'] ?>">
 
+
+                                </tr>
+                                <tr class="passengers" id="<?php echo $flight['id'] ?>">
+
+                                </tr>
+                                <tr>
                                     <td class="d-flex align-items-center">
-                                        <i class="fas fa-plus-square fs-2 me-2 addPassenger" style="cursor: pointer;" id=""  value="<?php echo $flight['id']?>"></i>
+                                        <i class="fas fa-plus-square fs-2 me-2 addPassenger" style="cursor: pointer;" id="" value="<?php echo $flight['id'] ?>"></i>
                                         <input type="submit" class="btn btn-primary" value="reserve" name="reserveOne">
 
                                     </td>
                                 </tr>
-                                <tr class="passengers" id="<?php echo $flight['id'] ?>">
-                                  
-                                </tr>
-                            </form>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                </form>
             </div>
         <?php endif; ?>
 
         </div>
         <script>
             var addBtn = document.querySelectorAll('.addPassenger')
-            
+            var i = 0;
             addBtn.forEach((e) => {
-                var i = 0;
-                e.addEventListener('click', ()=> {
+
+                e.addEventListener('click', () => {
+
                     i++
-                    var content = '<td>Passenger #1</td><td colspan=""><div class="input-group-lg d-flex mb-3 flex-column"><label for="from" class="form-label">Full Name</label><input class="form-control" name="pname'+ i +'" type="text" id="pname" placeholder="Name" required></div></td><td colspan=""><div class="input-group-lg d-flex mb-3 flex-column"><label for="from" class="form-label">Date of birth</label><input class="form-control" name="pdob'+i+'" type="text" id="dob" placeholder="Name" required></div></td>'
+
+                    var content = '<td>Passenger #' + i + '</td><td colspan=""><div class="input-group-lg d-flex mb-3 flex-column"><label for="from" class="form-label">Full Name</label><input class="form-control" name="pname[]" type="text" id="pname" placeholder="Name" required></div></td><td colspan=""><div class="input-group-lg d-flex mb-3 flex-column"><label for="from" class="form-label">Date of birth</label><input class="form-control" name="pdob[]" type="date" id="dob" placeholder="Date of Birth" required></div></td>'
                     var div = document.createElement('div')
                     div.classList.add('d-flex')
                     div.style.gap = '10px'
@@ -136,11 +149,9 @@ if ($_SESSION['logged'] == false) {
 
                     div.innerHTML = content
                     passengers.appendChild(div)
-                    
-    
-    
+
+
+
                 })
             })
-
-
         </script>

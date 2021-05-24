@@ -74,4 +74,10 @@ class UserController extends User
     unset($_SESSION["username"]);
     header("Location:login");
   }
+
+
+  public function getAllClients(){
+    $clients = $this->getClients();
+    return $clients;
+  }
 }
