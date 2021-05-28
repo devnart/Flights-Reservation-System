@@ -68,7 +68,7 @@
                     </div>
                     <!-- radio button end -->
                     <!-- reservation button  -->
-                    <input type="submit" class="btn btn-primary btn-lg" name="search" value="Search Flights">
+                    <input type="submit" class="btn btn-primary btn-lg text-white" name="search" value="Search Flights">
                 </form>
             </div>
         </div>

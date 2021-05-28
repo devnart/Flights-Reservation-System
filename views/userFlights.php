@@ -28,8 +28,8 @@ if (isset($_POST['delete'])) {
 <div class="container">
     <div class="my-5 d-flex">
         <h2 class="mb-0">Your <span class="text-primary fw-bold fst-italic">Reservation</span></h2>
-    <a class="btn btn-primary me-1 ms-auto" href="home"><i class="fas fa-angle-left me-2" ></i>Back</a>
-        
+        <a class="btn btn-primary me-1 ms-auto" href="home"><i class="fas fa-angle-left me-2"></i>Back</a>
+
     </div>
     <table class="table table-light">
         <tbody>
@@ -56,8 +56,8 @@ if (isset($_POST['delete'])) {
                         }
                         ?></td>
                     <td class="d-flex gap-1">
-                        <form action="" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button type="submit" name="delete"  class=" btn btn-danger" >Delete</button></form>
-                        <?php if(count($userPassengers)>0 ) :?><form action="updateReservation" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button  class="btn btn-secondary" type="submit" name="edit">Edit</button></form><?php endif;?>
+                        <form action="" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button type="submit" name="delete" class=" btn btn-danger">Delete</button></form>
+                        <?php if (count($userPassengers) > 0) : ?><form action="updateReservation" method="POST"><input type="hidden" name="id" value="<?php echo $flight['id'] ?>"><button class="btn btn-secondary" type="submit" name="edit">Edit</button></form><?php endif; ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

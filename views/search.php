@@ -23,12 +23,16 @@ if ($_SESSION['logged'] == false) {
 
 <div class="container">
 
+    <!-- Round Trip -->
+    <div class="my-5 d-flex">
+                        <h2 class="mb-0">Available <span class="text-primary fw-bold fst-italic">Flights</span></h2>
+                        <a class="btn btn-primary me-1 ms-auto" href="home"><i class="fas fa-angle-left me-2"></i>Back</a>
 
+                    </div>
     <?php if (isset($r['retour'])) : ?>
         <div class="table-responsive">
             <form action="reserve" method="POST">
                 <table class="table">
-                    <h2>Flights</h2>
                     <thead>
                         <tr>
                             <th scope="col">Origin</th>
@@ -80,12 +84,11 @@ if ($_SESSION['logged'] == false) {
             </form>
 
         <?php endif; ?>
-
+        <!-- One Way Trip -->
         <?php if (!isset($r['retour'])) : ?>
             <div class="table-responsive">
                 <form action="reserve" method="POST" id="form1">
                     <table class="table">
-                        <h2>Flights</h2>
                         <thead>
                             <tr>
                                 <th scope="col">Origin</th>
@@ -101,8 +104,8 @@ if ($_SESSION['logged'] == false) {
                                 <input type="hidden" name="clientID" value="<?php echo $_SESSION['clientID'] ?>">
                                 <input type="hidden" name="cName" value="<?php echo $_SESSION['username'] ?>">
                                 <input type="hidden" name="cEmail" value="<?php echo $_SESSION['email'] ?>">
-                                <input type="hidden" name="maxSeats" value="<?php  echo $flight['maxSeats'] ?>">
-                                <input type="hidden" name="reserved" value="<?php  echo $flight['reserved'] ?>">
+                                <input type="hidden" name="maxSeats" value="<?php echo $flight['maxSeats'] ?>">
+                                <input type="hidden" name="reserved" value="<?php echo $flight['reserved'] ?>">
                                 <tr>
                                     <td><?php echo $flight['depart'] ?></td>
                                     <td><?php echo $flight['land'] ?></td>

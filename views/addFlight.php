@@ -15,6 +15,11 @@ if (isset($_SESSION['logged'])) {
   
 ?>
 <div class="container mt-5">
+<div class="my-4 d-flex">
+    <a class="btn btn-primary me-1" href="dashboard"><i class="fas fa-angle-left" ></i></a>
+    <a class="btn btn-primary" href="logout"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+    <h4 class="ms-auto">Hello, <?php echo $_SESSION['username']?></h4>
+</div>
     <form action="" method="POST" class="form">
 
         <label for="" class="form-label">Depart</label>
